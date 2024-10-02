@@ -14,7 +14,7 @@ public class ShrutiPlacementService {
 		return repository.findAll();	
 	}
 	
-	public ShrutiPlacement get(Long id)
+	public ShrutiPlacement get(Integer id)
 	{
 		return  repository.findById(id).get();		
 	}
@@ -22,7 +22,7 @@ public class ShrutiPlacementService {
 	{
 		repository.save(placement);
 	}
-	public void delete(Long id)
+	public void delete(Integer id)
 	{
 		repository.deleteById(id);
 	}

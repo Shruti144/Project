@@ -21,16 +21,16 @@ public class ShrutiPlacementController {
 	}
 	//Retrieve  by Id
 	@GetMapping("/Placement{id}")
-	public ResponseEntity<ShrutiPlacement>get(@PathVariable Long id)
+	public ResponseEntity<ShrutiPlacement>get(@PathVariable Integer id)
 	{
 		try
 		{
-			ShrutiPlacement Shrutiplacement=service.get(id);
-		     return new ResponseEntity<ShrutiPlacement>(HttpStatus.OK);
+			ShrutiPlacement shrutiPlacement=service.get(id);
+		     return new ResponseEntity<>(shrutiPlacement,HttpStatus.OK);
 	}
 		catch(Exception e)
 		{
-		return new ResponseEntity<ShrutiPlacement>(HttpStatus.NOT_FOUND);
+		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 	}
 		
@@ -42,12 +42,20 @@ public class ShrutiPlacementController {
 	}
 	//update
 	@PutMapping("/Placement")
-	public ResponseEntity<?>update(@RequestBody ShrutiPlacement placement,@PathVariable Long id)
+	public ResponseEntity<?>update(@RequestBody ShrutiPlacement placement,@PathVariable Integer id)
 	{
 		try {
-			ShrutiPlacement Shrutiplacement=service.get(id);
-			service.save(Shrutiplacement);
-			return new ResponseEntity<>(HttpStatus.OK);
+			ShrutiPlacement existingPlacement=service.get(id);
+			if(existingPlacement!=null)
+			{
+				service.save(placement);
+				return new ResponseEntity<>(HttpStatus.OK);
+			}
+			else
+			{
+				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+				
+			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND); 
@@ -55,9 +63,17 @@ public class ShrutiPlacementController {
 	}
 	//Delete
 	@DeleteMapping("/Placement/{id}")
-	public void delete(@PathVariable Long id)
+	public ResponseEntity <Void> delete(@PathVariable Integer id)
 	{
-		service.delete(id);
+		try
+		{
+			service.delete(id);
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT); 	
+		}
+		catch(Exception e)
+		{
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT); 	
+		}
 	}	
 }
 
